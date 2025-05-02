@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Pokemon } from './pokemon.model';
 import { PokemonBorderDirective } from './pokemon-border.directive';
 import { DatePipe } from '@angular/common';
@@ -13,6 +13,15 @@ import { PokemonService } from './pokemon.service';
 export class AppComponent {
   readonly #pokemonService = inject(PokemonService);
   pokemonList = signal(this.#pokemonService.getPokemonList());
+  readonly searchTerm = signal('');
+
+  readonly pokemonListFiltered = computed(() => {
+    const searchTerm = this.searchTerm();
+    const pokemonList = this.#pokemonService.getPokemonList();
+
+    return pokemonList.filter(pokemon => 
+      pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()));
+  });
 
   size(pokemon: Pokemon) {
     if (pokemon.life <= 15) {
@@ -24,14 +33,14 @@ export class AppComponent {
     return 'Moyen';
   };
 
-  imageSrc = signal('https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png');
-
-
+  
   incrementLife(pokemon: Pokemon) {
     pokemon.life = pokemon.life + 1;
   }
+
   decrementLife(pokemon: Pokemon) { 
     pokemon.life = pokemon.life - 1;
   }
+
 
 }

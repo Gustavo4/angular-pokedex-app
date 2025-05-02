@@ -21,7 +21,6 @@ export class PokemonService {
     return pokemon;
   }
 
-
   getPokemonTypeList(): string[] {  
     return [
       'Feu',
