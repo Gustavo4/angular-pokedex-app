@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PokemonService } from '../../pokemon.service';
 import {
+  Form,
   FormArray,
   FormControl,
   FormGroup,
@@ -30,4 +31,26 @@ export class PokemonEditComponent {
       this.pokemon().types.map((type) => new FormControl(type)),
     ),
   });
+
+  get pokemonTypeList(): FormArray {
+    return this.form.get('types') as FormArray;
+  }
+
+  isPokemonTypeSelected(type: string): boolean {
+    return !!this.pokemonTypeList.controls.find(
+      (control) => control.value === type,
+    );
+  }
+
+  onPokemonTypeChange(type: string, isChecked: boolean) {
+    if (isChecked) {
+      this.pokemonTypeList.push(new FormControl(type));
+    } else {
+      const index = this.pokemonTypeList.controls
+        .map((control) => control.value)
+        .indexOf(type);
+
+      this.pokemonTypeList.removeAt(index);
+    }
+  }
 }
