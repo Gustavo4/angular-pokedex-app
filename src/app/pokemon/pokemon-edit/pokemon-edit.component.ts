@@ -2,12 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PokemonService } from '../../pokemon.service';
 import {
-  Form,
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { getPokemonColor } from '../../pokemon.model';
 
 @Component({
   selector: 'app-pokemon-edit',
@@ -44,13 +44,25 @@ export class PokemonEditComponent {
 
   onPokemonTypeChange(type: string, isChecked: boolean) {
     if (isChecked) {
-      this.pokemonTypeList.push(new FormControl(type));
+      const control = new FormControl(type);
+      this.pokemonTypeList.push(control);
     } else {
       const index = this.pokemonTypeList.controls
         .map((control) => control.value)
         .indexOf(type);
-
       this.pokemonTypeList.removeAt(index);
     }
+  }
+
+  getPokemonColor(type: string): string {
+    return getPokemonColor(type);
+  }
+
+  getChipTextColor(type: string): 'black' | 'white' {
+    return type === 'Electrik' ? 'black' : 'white';
+  }
+
+  onSubmit() {
+    console.log(this.form.value);
   }
 }
