@@ -23,6 +23,7 @@ export class PokemonEditComponent {
   readonly pokemon = signal(
     this.pokemonService.getPokemonById(this.pokemonId),
   ).asReadonly();
+  readonly POKEMON_RULES = POKEMON_RULES;
 
   readonly form = new FormGroup({
     name: new FormControl(this.pokemon().name, [
@@ -40,6 +41,20 @@ export class PokemonEditComponent {
 
   get pokemonName(): FormControl {
     return this.form.get('name') as FormControl;
+  }
+
+  get pokemonLife(): FormControl {
+    return this.form.get('life') as FormControl;
+  }
+
+  incrementLife() {
+    const newValue = this.pokemonLife.value + 1;
+    this.pokemonLife.setValue(newValue);
+  }
+
+  decrementLife() {
+    const newValue = this.pokemonLife.value - 1;
+    this.pokemonLife.setValue(newValue);
   }
 
   get pokemonTypeList(): FormArray {

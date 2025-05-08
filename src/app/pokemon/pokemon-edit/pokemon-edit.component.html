@@ -57,6 +57,8 @@
                       <button
                         type="button"
                         class="btn btn-outline-secondary"
+                        [disabled]="pokemonLife.value <= POKEMON_RULES.MIN_LIFE"
+                        (click)="decrementLife()"
                       >
                         -
                       </button>
@@ -69,6 +71,8 @@
                       <button
                         type="button"
                         class="btn btn-outline-secondary"
+                        [disabled]="pokemonLife.value >= POKEMON_RULES.MAX_LIFE"
+                        (click)="incrementLife()"
                       >
                         +
                       </button>
