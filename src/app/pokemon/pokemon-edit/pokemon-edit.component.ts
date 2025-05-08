@@ -38,6 +38,10 @@ export class PokemonEditComponent {
     ),
   });
 
+  get pokemonName(): FormControl {
+    return this.form.get('name') as FormControl;
+  }
+
   get pokemonTypeList(): FormArray {
     return this.form.get('types') as FormArray;
   }
