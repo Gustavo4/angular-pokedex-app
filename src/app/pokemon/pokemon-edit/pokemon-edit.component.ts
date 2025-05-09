@@ -36,6 +36,11 @@ export class PokemonEditComponent {
     damage: new FormControl(this.pokemon().damage),
     types: new FormArray(
       this.pokemon().types.map((type) => new FormControl(type)),
+      [
+        Validators.required,
+        Validators.minLength(POKEMON_RULES.MIN_TYPES),
+        Validators.maxLength(POKEMON_RULES.MAX_TYPES),
+      ],
     ),
   });
 
