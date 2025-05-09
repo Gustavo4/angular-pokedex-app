@@ -9,7 +9,11 @@ import { RouterLink } from '@angular/router';
   selector: 'app-pokemon-list',
   imports: [PokemonBorderDirective, DatePipe, RouterLink],
   templateUrl: './pokemon-list.component.html',
-  styles: ``
+  styles: `
+    .pokemon-card {
+      cursor: pointer;
+    }
+  `,
 })
 export class PokemonListComponent {
   readonly #pokemonService = inject(PokemonService);
@@ -20,8 +24,9 @@ export class PokemonListComponent {
     const searchTerm = this.searchTerm();
     const pokemonList = this.#pokemonService.getPokemonList();
 
-    return pokemonList.filter(pokemon => 
-      pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()));
+    return pokemonList.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()),
+    );
   });
 
   size(pokemon: Pokemon) {
@@ -32,14 +37,5 @@ export class PokemonListComponent {
       return 'Grand';
     }
     return 'Moyen';
-  };
-  
-  incrementLife(pokemon: Pokemon) {
-    pokemon.life = pokemon.life + 1;
   }
-
-  decrementLife(pokemon: Pokemon) { 
-    pokemon.life = pokemon.life - 1;
-  }
-  
 }
