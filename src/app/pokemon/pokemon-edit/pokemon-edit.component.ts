@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PokemonService } from '../../pokemon.service';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { getPokemonColor, POKEMON_RULES } from '../../pokemon.model';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-edit',
@@ -21,9 +22,16 @@ export class PokemonEditComponent {
   readonly route = inject(ActivatedRoute);
   readonly pokemonService = inject(PokemonService);
   readonly pokemonId = Number(this.route.snapshot.paramMap.get('id'));
-  readonly pokemon = toSignal(
-    this.pokemonService.getPokemonById(this.pokemonId),
+  readonly pokemonResponse = toSignal(
+    this.pokemonService.getPokemonById(this.pokemonId).pipe(
+      map((pokemon) => ({ value: pokemon, error: undefined })),
+      catchError((error) => of({ value: undefined, error: error })),
+    ),
   );
+  readonly loading = computed(() => this.pokemonResponse() === undefined);
+  readonly error = computed(() => this.pokemonResponse()?.error);
+  readonly pokemon = computed(() => this.pokemonResponse()?.value);
+
   readonly POKEMON_RULES = POKEMON_RULES;
 
   readonly form = new FormGroup({
