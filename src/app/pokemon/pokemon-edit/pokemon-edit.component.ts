@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PokemonService } from '../../pokemon.service';
 import {
   FormArray,
@@ -20,6 +20,7 @@ import { catchError, map, of } from 'rxjs';
 })
 export class PokemonEditComponent {
   readonly route = inject(ActivatedRoute);
+  readonly router = inject(Router);
   readonly pokemonService = inject(PokemonService);
   readonly pokemonId = Number(this.route.snapshot.paramMap.get('id'));
   readonly pokemonResponse = toSignal(
@@ -132,6 +133,19 @@ export class PokemonEditComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    const pokemon = this.pokemon();
+    if (this.form.valid && pokemon) {
+      const updatedPokemon = {
+        ...pokemon,
+        name: this.pokemonName.value,
+        life: this.pokemonLife.value,
+        damage: this.pokemonDamage.value,
+        types: this.pokemonTypeList.value,
+      };
+
+      this.pokemonService.updatePokemon(updatedPokemon).subscribe(() => {
+        this.router.navigate(['/pokemons', pokemon.id]);
+      });
+    }
   }
 }

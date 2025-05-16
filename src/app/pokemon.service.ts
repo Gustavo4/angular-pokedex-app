@@ -20,6 +20,11 @@ export class PokemonService {
     return this.#http.get<Pokemon>(url);
   }
 
+  updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const url = this.#POKEMON_API_URL + '/' + pokemon.id;
+    return this.#http.put<Pokemon>(url, pokemon);
+  }
+
   getPokemonTypeList(): string[] {
     return [
       'Plante',
