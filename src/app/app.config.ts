@@ -20,6 +20,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
+        path: 'add',
+        component: PokemonAddComponent,
+        title: "Ajout d'un Pokémon",
+      },
+      {
         path: 'edit/:id',
         component: PokemonEditComponent,
         title: "Édition d'un Pokémon",
@@ -33,11 +38,6 @@ const routes: Routes = [
         path: '',
         component: PokemonListComponent,
         title: 'Pokédex',
-      },
-      {
-        path: 'add',
-        component: PokemonAddComponent,
-        title: "Ajout d'un Pokémon",
       },
     ],
   },
