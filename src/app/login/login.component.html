@@ -1,0 +1,54 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-4 offset-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Page de connèxion</h3>
+
+                    <p class="card-title text-center">{{ message() }}</p>
+
+                    <p class="card-title fst-italic">
+                        <small>
+                            Utilisez les identifiants 'Pikachu' & 'Pikachu#' pour vous connecter.
+                        </small>
+                    </p>
+
+                    <form (submit)="onSubmit($event)">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom</label>
+                            <input 
+                                #nameField
+                                id="name"
+                                type="text"
+                                class="form-control"
+                                autocomplete="username"
+                                [value]="name()"
+                                (input)="name.set(nameField.value)"
+                                required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input 
+                                #passwordField
+                                id="passeword"
+                                type="password"
+                                class="form-control"
+                                autocomplete="current-password"
+                                [value]="password()"
+                                (input)="password.set(passwordField.value)"
+                                required
+                            />
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                Se connecter
+                            </button>
+                        </div>
+                    </form>"
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
