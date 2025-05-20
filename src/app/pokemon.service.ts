@@ -30,6 +30,10 @@ export class PokemonService {
     return this.#http.delete<void>(url);
   }
 
+  addPokemon(pokemon: Omit<Pokemon, 'id'>): Observable<Pokemon> {
+    return this.#http.post<Pokemon>(this.#POKEMON_API_URL, pokemon);
+  }
+
   getPokemonTypeList(): string[] {
     return [
       'Plante',
