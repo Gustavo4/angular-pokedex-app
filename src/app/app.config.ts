@@ -11,6 +11,7 @@ import { PokemonAddComponent } from './pokemon/pokemon-add/pokemon-add.component
 import { PokemonLocalStorageService } from './pokemon-local-storage.service';
 import { PokemonJSONServerService } from './pokemon-json-server.service';
 import { environment } from '../environments/environment';
+import { PokemonService } from './pokemon.service';
 
 export function pokemonServiceFactory() {
   return environment.production
@@ -63,5 +64,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
+    {
+      provide: PokemonService,
+      useFactory: pokemonServiceFactory,
+    },
   ],
 };
