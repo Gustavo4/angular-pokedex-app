@@ -8,6 +8,15 @@ import { provideHttpClient } from '@angular/common/http';
 import { AuthGuard } from './core/auth/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { PokemonAddComponent } from './pokemon/pokemon-add/pokemon-add.component';
+import { PokemonLocalStorageService } from './pokemon-local-storage.service';
+import { PokemonJSONServerService } from './pokemon-json-server.service';
+import { environment } from '../environments/environment';
+
+export function pokemonServiceFactory() {
+  return environment.production
+    ? new PokemonLocalStorageService()
+    : new PokemonJSONServerService();
+}
 
 const routes: Routes = [
   {

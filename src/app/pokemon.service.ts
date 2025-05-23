@@ -1,50 +1,20 @@
-import { inject, Injectable } from '@angular/core';
-import { POKEMON_LIST } from './pokemon-list.fake';
+import { Injectable } from '@angular/core';
 import { Pokemon, PokemonList } from './pokemon.model';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PokemonService {
-  readonly #http = inject(HttpClient);
-  readonly #POKEMON_API_URL = 'http://localhost:3000/pokemons';
+export abstract class PokemonService {
+  abstract getPokemonList(): Observable<PokemonList>;
 
-  getPokemonList(): Observable<PokemonList> {
-    return this.#http.get<PokemonList>(this.#POKEMON_API_URL);
-  }
+  abstract getPokemonById(id: number): Observable<Pokemon>;
 
-  getPokemonById(id: number): Observable<Pokemon> {
-    const url = this.#POKEMON_API_URL + '/' + id;
-    return this.#http.get<Pokemon>(url);
-  }
+  abstract updatePokemon(pokemon: Pokemon): Observable<Pokemon>;
 
-  updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
-    const url = this.#POKEMON_API_URL + '/' + pokemon.id;
-    return this.#http.put<Pokemon>(url, pokemon);
-  }
+  abstract deletePokemon(id: number): Observable<void>;
 
-  deletePokemon(id: number): Observable<void> {
-    const url = this.#POKEMON_API_URL + '/' + id;
-    return this.#http.delete<void>(url);
-  }
+  abstract addPokemon(pokemon: Omit<Pokemon, 'id'>): Observable<Pokemon>;
 
-  addPokemon(pokemon: Omit<Pokemon, 'id'>): Observable<Pokemon> {
-    return this.#http.post<Pokemon>(this.#POKEMON_API_URL, pokemon);
-  }
-
-  getPokemonTypeList(): string[] {
-    return [
-      'Plante',
-      'Feu',
-      'Eau',
-      'Insecte',
-      'Normal',
-      'Electrik',
-      'Poison',
-      'Fée',
-      'Vol',
-    ];
-  }
+  abstract getPokemonTypeList(): string[];
 }
